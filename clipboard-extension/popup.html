@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClipCache</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <!-- Header Section -->
+        <header class="popup-header">
+            <h1>📋 ClipCache</h1>
+            <div class="header-controls">
+                <button id="settingsBtn" class="icon-btn" title="Settings">⚙️</button>
+                <button id="clearAllBtn" class="icon-btn" title="Clear All">🗑️</button>
+            </div>
+        </header>
+
+        <!-- Search Bar -->
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search clipboard history..." />
+                <span class="search-icon">🔍</span>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="empty-state">
+            <div class="empty-icon">📋</div>
+            <h3>No clipboard history yet</h3>
+            <p>Copy some text on any webpage to get started!</p>
+        </div>
+
+        <!-- Clipboard History List -->
+        <div id="historySection" class="history-section" style="display: none;">
+            <div class="history-header">
+                <span class="history-count">
+                    <span id="itemCount">0</span> items
+                </span>
+                <button id="toggleViewBtn" class="text-btn" title="Toggle compact view">📏</button>
+            </div>
+            
+            <div id="historyList" class="history-list">
+                <!-- History items will be inserted here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Loading State -->
+        <div id="loadingState" class="loading-state">
+            <div class="loading-spinner"></div>
+            <p>Loading clipboard history...</p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="popup-footer">
+            <div class="footer-info">
+                <span id="lastUpdated">Ready</span>
+            </div>
+            <button id="refreshBtn" class="icon-btn" title="Refresh">🔄</button>
+        </footer>
+
+        <!-- Settings Modal (Hidden by default) -->
+        <div id="settingsModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Settings</h2>
+                    <button id="closeSettings" class="icon-btn">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="autoRefresh" checked>
+                            Auto-refresh on copy
+                        </label>
+                    </div>
+                    <div class="setting-group">
+                        <label>
+                            <input type="checkbox" id="compactView">
+                            Compact view (show more items)
+                        </label>
+                    </div>
+                    <div class="setting-group">
+                        <label for="maxItems">Max items to keep:</label>
+                        <select id="maxItems">
+                            <option value="25">25</option>
+                            <option value="50" selected>50</option>
+                            <option value="100">100</option>
+                            <option value="250">250</option>
+                        </select>
+                    </div>
+                    <div class="setting-group">
+                        <label for="fontSize">Font size:</label>
+                        <select id="fontSize">
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="saveSettings" class="primary-btn">Save Settings</button>
+                    <button id="resetSettings" class="text-btn">Reset to Defaults</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions Tooltip (Hidden by default) -->
+        <div id="tooltip" class="tooltip" style="display: none;">
+            <span id="tooltipText"></span>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
