@@ -1,0 +1,120 @@
+/* Authentication */
+.auth-modal {
+    max-width: 400px;
+}
+
+.auth-container {
+    padding: 2rem;
+}
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.auth-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.auth-header p {
+    color: var(--secondary-color);
+    font-size: 0.875rem;
+}
+
+.auth-tabs {
+    display: flex;
+    background-color: #f1f5f9;
+    border-radius: var(--border-radius);
+    padding: 0.25rem;
+    margin-bottom: 1.5rem;
+}
+
+body.dark-mode .auth-tabs {
+    background-color: #334155;
+}
+
+.auth-tab {
+    flex: 1;
+    padding: 0.75rem;
+    background: transparent;
+    border: none;
+    border-radius: var(--border-radius);
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    color: var(--secondary-color);
+}
+
+.auth-tab.active {
+    background-color: white;
+    color: var(--dark-color);
+    box-shadow: var(--shadow);
+}
+
+body.dark-mode .auth-tab.active {
+    background-color: #475569;
+    color: var(--dark-color);
+}
+
+.auth-form {
+    display: none;
+}
+
+.auth-form.active {
+    display: block;
+}
+
+.auth-divider {
+    text-align: center;
+    margin: 1.5rem 0;
+    position: relative;
+}
+
+.auth-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: #e2e8f0;
+}
+
+body.dark-mode .auth-divider::before {
+    background-color: #334155;
+}
+
+.auth-divider span {
+    background-color: white;
+    padding: 0 1rem;
+    color: var(--secondary-color);
+    font-size: 0.875rem;
+}
+
+body.dark-mode .auth-divider span {
+    background-color: #1e293b;
+}
+
+.btn-google {
+    background-color: white;
+    color: var(--dark-color);
+    border: 1px solid #e2e8f0;
+}
+
+body.dark-mode .btn-google {
+    background-color: #334155;
+    color: var(--dark-color);
+    border-color: #475569;
+}
+
+.btn-google:hover {
+    background-color: #f8fafc;
+}
+
+body.dark-mode .btn-google:hover {
+    background-color: #475569;
+}

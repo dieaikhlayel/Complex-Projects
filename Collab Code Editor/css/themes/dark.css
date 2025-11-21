@@ -1,0 +1,59 @@
+/* Dark Theme - Additional Styles */
+body.dark-mode {
+    --editor-bg: #1a1b26;
+    --editor-text: #a9b1d6;
+    --editor-selection: #3d59a1;
+    --editor-gutter: #1a1b26;
+    --editor-gutter-text: #565f89;
+    --editor-active-line: #2a2c3e;
+    --editor-cursor: #c0caf5;
+}
+
+body.dark-mode .code-editor {
+    background-color: var(--editor-bg);
+    color: var(--editor-text);
+}
+
+body.dark-mode .code-editor .keyword {
+    color: #bb9af7;
+}
+
+body.dark-mode .code-editor .string {
+    color: #9ece6a;
+}
+
+body.dark-mode .code-editor .comment {
+    color: #565f89;
+}
+
+body.dark-mode .code-editor .function {
+    color: #7aa2f7;
+}
+
+body.dark-mode .code-editor .number {
+    color: #ff9e64;
+}
+
+body.dark-mode .code-editor .operator {
+    color: #89ddff;
+}
+
+body.dark-mode .code-editor .class {
+    color: #ff9e64;
+}
+
+body.dark-mode .code-editor .attribute {
+    color: #7dcfff;
+}
+
+body.dark-mode .code-editor .selector {
+    color: #bb9af7;
+}
+
+body.dark-mode .code-editor .property {
+    color: #7aa2f7;
+}
+
+body.dark-mode .code-editor .value {
+    color: #9ece6a;
+}

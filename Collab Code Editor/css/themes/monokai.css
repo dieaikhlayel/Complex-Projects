@@ -1,0 +1,42 @@
+/* Monokai Theme */
+body.monokai-theme {
+    --light-color: #272822;
+    --dark-color: #f8f8f2;
+    --primary-color: #f92672;
+    --editor-bg: #272822;
+    --editor-text: #f8f8f2;
+    --editor-selection: #49483e;
+}
+
+body.monokai-theme .code-editor {
+    background-color: var(--editor-bg);
+    color: var(--editor-text);
+}
+
+body.monokai-theme .code-editor .keyword {
+    color: #f92672;
+}
+
+body.monokai-theme .code-editor .string {
+    color: #e6db74;
+}
+
+body.monokai-theme .code-editor .comment {
+    color: #75715e;
+}
+
+body.monokai-theme .code-editor .function {
+    color: #66d9ef;
+}
+
+body.monokai-theme .code-editor .number {
+    color: #ae81ff;
+}
+
+body.monokai-theme .code-editor .operator {
+    color: #f92672;
+}
+
+body.monokai-theme .code-editor .class {
+    color: #a6e22e;
+}

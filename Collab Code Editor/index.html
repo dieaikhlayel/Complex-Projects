@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CollabCode - Real-Time Collaborative Editor</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/editor.css">
+    <link rel="stylesheet" href="css/sidebar.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Authentication Modal -->
+    <div id="auth-modal" class="modal active">
+        <div class="modal-content auth-modal">
+            <div class="auth-container">
+                <div class="auth-header">
+                    <h1>CollabCode</h1>
+                    <p>Real-Time Collaborative Code Editor</p>
+                </div>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="register">Register</button>
+                </div>
+                <form id="login-form" class="auth-form active">
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" id="login-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <input type="password" id="login-password" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+                    <div class="auth-divider">
+                        <span>or continue with</span>
+                    </div>
+                    <button type="button" class="btn btn-secondary btn-full btn-google">
+                        <i class="fab fa-google"></i>
+                        Google
+                    </button>
+                </form>
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-name">Full Name</label>
+                        <input type="text" id="register-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <input type="email" id="register-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">Password</label>
+                        <input type="password" id="register-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm">Confirm Password</label>
+                        <input type="password" id="register-confirm" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="app" class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="btn-icon">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="app-title">CollabCode</h1>
+                <div class="project-info">
+                    <span id="current-project">Untitled Project</span>
+                    <div class="project-status">
+                        <span class="status-indicator online"></span>
+                        <span id="online-users">1 user online</span>
+                    </div>
+                </div>
+            </div>
+            <div class="header-center">
+                <div class="branch-selector">
+                    <i class="fas fa-code-branch"></i>
+                    <select id="branch-select">
+                        <option value="main">main</option>
+                        <option value="develop">develop</option>
+                    </select>
+                    <button id="new-branch-btn" class="btn-icon" title="Create New Branch">
+                        <i class="fas fa-plus"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="user-menu">
+                    <img id="user-avatar" src="" alt="User Avatar" class="user-avatar">
+                    <span id="username">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <button id="share-btn" class="btn btn-primary">
+                    <i class="fas fa-share"></i>
+                    Share
+                </button>
+                <button id="deploy-btn" class="btn btn-success">
+                    <i class="fas fa-rocket"></i>
+                    Deploy
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-section">
+                    <h3>Explorer</h3>
+                    <div class="file-tree" id="file-tree">
+                        <div class="file-item folder expanded">
+                            <div class="file-header">
+                                <i class="fas fa-chevron-down"></i>
+                                <i class="fas fa-folder"></i>
+                                <span>src</span>
+                            </div>
+                            <div class="file-children">
+                                <div class="file-item file active">
+                                    <i class="fas fa-file-code"></i>
+                                    <span>index.html</span>
+                                </div>
+                                <div class="file-item file">
+                                    <i class="fas fa-file-code"></i>
+                                    <span>styles.css</span>
+                                </div>
+                                <div class="file-item file">
+                                    <i class="fas fa-file-code"></i>
+                                    <span>app.js</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="file-item folder">
+                            <div class="file-header">
+                                <i class="fas fa-chevron-right"></i>
+                                <i class="fas fa-folder"></i>
+                                <span>public</span>
+                            </div>
+                        </div>
+                        <div class="file-item file">
+                            <i class="fas fa-file"></i>
+                            <span>package.json</span>
+                        </div>
+                        <div class="file-item file">
+                            <i class="fas fa-file"></i>
+                            <span>README.md</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <h3>Collaborators</h3>
+                    <div id="collaborators-list" class="collaborators-list">
+                        <!-- Collaborators will be dynamically added -->
+                    </div>
+                </div>
+                <div class="sidebar-section">
+                    <h3>Git</h3>
+                    <div class="git-actions">
+                        <button id="git-commit" class="btn btn-secondary btn-full">
+                            <i class="fas fa-code-commit"></i>
+                            Commit Changes
+                        </button>
+                        <button id="git-push" class="btn btn-secondary btn-full">
+                            <i class="fas fa-upload"></i>
+                            Push to Remote
+                        </button>
+                        <button id="git-pull" class="btn btn-secondary btn-full">
+                            <i class="fas fa-download"></i>
+                            Pull from Remote
+                        </button>
+                    </div>
+                    <div class="commit-history">
+                        <h4>Recent Commits</h4>
+                        <div id="commit-list" class="commit-list">
+                            <!-- Commits will be dynamically added -->
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Editor Area -->
+            <main class="editor-area">
+                <div class="editor-tabs" id="editor-tabs">
+                    <div class="editor-tab active" data-file="index.html">
+                        <span>index.html</span>
+                        <button class="tab-close">&times;</button>
+                    </div>
+                </div>
+                <div class="editor-container">
+                    <div class="editor-toolbar">
+                        <div class="toolbar-left">
+                            <select id="language-select">
+                                <option value="html">HTML</option>
+                                <option value="css">CSS</option>
+                                <option value="javascript">JavaScript</option>
+                                <option value="python">Python</option>
+                                <option value="java">Java</option>
+                            </select>
+                            <button id="format-btn" class="btn-icon" title="Format Code">
+                                <i class="fas fa-indent"></i>
+                            </button>
+                            <button id="find-btn" class="btn-icon" title="Find and Replace">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                        <div class="toolbar-right">
+                            <div class="editor-stats">
+                                <span>Ln 1, Col 1</span>
+                                <span>Spaces: 2</span>
+                                <span>UTF-8</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="code-editor" class="code-editor"></div>
+                </div>
+                <div class="editor-footer">
+                    <div class="footer-left">
+                        <div class="connection-status">
+                            <span class="status-indicator online"></span>
+                            <span>Connected</span>
+                        </div>
+                    </div>
+                    <div class="footer-right">
+                        <button id="terminal-toggle" class="btn-icon">
+                            <i class="fas fa-terminal"></i>
+                            Terminal
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="sidebar-tabs">
+                    <button class="sidebar-tab active" data-tab="chat">Chat</button>
+                    <button class="sidebar-tab" data-tab="git">Git</button>
+                    <button class="sidebar-tab" data-tab="settings">Settings</button>
+                </div>
+                <div class="sidebar-content">
+                    <div id="chat-tab" class="tab-content active">
+                        <div class="chat-messages" id="chat-messages">
+                            <!-- Messages will be dynamically added -->
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chat-input" placeholder="Type a message...">
+                            <button id="send-message" class="btn-icon">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="git-tab" class="tab-content">
+                        <div class="git-diff">
+                            <h4>Changes</h4>
+                            <div id="changes-list" class="changes-list">
+                                <!-- File changes will be dynamically added -->
+                            </div>
+                        </div>
+                    </div>
+                    <div id="settings-tab" class="tab-content">
+                        <div class="settings-section">
+                            <h4>Editor Settings</h4>
+                            <div class="setting-item">
+                                <label>Theme</label>
+                                <select id="theme-select">
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                    <option value="monokai">Monokai</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Font Size</label>
+                                <input type="range" id="font-size" min="12" max="24" value="14">
+                            </div>
+                            <div class="setting-item">
+                                <label>Tab Size</label>
+                                <input type="number" id="tab-size" min="2" max="8" value="2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Terminal -->
+        <div id="terminal" class="terminal">
+            <div class="terminal-header">
+                <span>Terminal</span>
+                <button id="terminal-close" class="btn-icon">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="terminal-content">
+                <div id="terminal-output"></div>
+                <div class="terminal-input">
+                    <span class="prompt">$</span>
+                    <input type="text" id="terminal-input" autocomplete="off">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="share-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Share Project</h3>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="share-link">
+                    <input type="text" id="share-url" readonly>
+                    <button id="copy-link" class="btn btn-primary">Copy Link</button>
+                </div>
+                <div class="share-settings">
+                    <h4>Permissions</h4>
+                    <div class="permission-option">
+                        <input type="radio" id="read-only" name="permission" checked>
+                        <label for="read-only">Read Only</label>
+                    </div>
+                    <div class="permission-option">
+                        <input type="radio" id="can-edit" name="permission">
+                        <label for="can-edit">Can Edit</label>
+                    </div>
+                    <div class="permission-option">
+                        <input type="radio" id="can-manage" name="permission">
+                        <label for="can-manage">Can Manage</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/editor.js"></script>
+    <script src="js/collaboration.js"></script>
+    <script src="js/fileSystem.js"></script>
+    <script src="js/gitIntegration.js"></script>
+    <script src="js/terminal.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
