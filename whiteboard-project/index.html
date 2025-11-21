@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Whiteboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container-fluid vh-100 d-flex flex-column">
+        <!-- Header -->
+        <header class="bg-primary text-white p-3">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h4 class="mb-0">Collaborative Whiteboard</h4>
+                    <small id="roomInfo" class="opacity-75">Room: Loading...</small>
+                </div>
+                <div class="col-md-6 text-end">
+                    <div class="btn-group">
+                        <button class="btn btn-sm btn-outline-light" id="clearBtn">Clear</button>
+                        <button class="btn btn-sm btn-outline-light" id="saveBtn">Save</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="row flex-grow-1">
+            <!-- Tools Panel -->
+            <div class="col-md-2 bg-light p-3 border-end">
+                <div class="tools-section mb-4">
+                    <h6>Tools</h6>
+                    <div class="btn-group-vertical w-100" id="toolButtons">
+                        <button class="btn btn-outline-primary active" data-tool="pencil">✏️ Pencil</button>
+                        <button class="btn btn-outline-primary" data-tool="eraser">🧽 Eraser</button>
+                        <button class="btn btn-outline-primary" data-tool="line">📏 Line</button>
+                        <button class="btn btn-outline-primary" data-tool="rectangle">⬜ Rectangle</button>
+                        <button class="btn btn-outline-primary" data-tool="circle">⭕ Circle</button>
+                    </div>
+                </div>
+
+                <div class="color-section mb-4">
+                    <h6>Colors</h6>
+                    <div class="color-palette">
+                        <div class="color-option active" data-color="#000000" style="background-color: #000000;"></div>
+                        <div class="color-option" data-color="#ff0000" style="background-color: #ff0000;"></div>
+                        <div class="color-option" data-color="#00ff00" style="background-color: #00ff00;"></div>
+                        <div class="color-option" data-color="#0000ff" style="background-color: #0000ff;"></div>
+                        <div class="color-option" data-color="#ffff00" style="background-color: #ffff00;"></div>
+                        <div class="color-option" data-color="#ff00ff" style="background-color: #ff00ff;"></div>
+                    </div>
+                    <input type="color" id="customColor" class="form-control form-control-color mt-2" value="#000000">
+                </div>
+
+                <div class="size-section mb-4">
+                    <h6>Brush Size: <span id="brushSizeValue">5</span>px</h6>
+                    <input type="range" class="form-range" id="brushSize" min="1" max="50" value="5">
+                </div>
+
+                <div class="users-section">
+                    <h6>Online Users</h6>
+                    <div id="usersList" class="users-list">
+                        <!-- Users will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canvas Area -->
+            <div class="col-md-10 p-0 position-relative">
+                <canvas id="whiteboard"></canvas>
+                <div id="cursorOverlay" class="cursor-overlay"></div>
+            </div>
+        </div>
+
+        <!-- Toast for notifications -->
+        <div class="toast-container position-fixed top-0 end-0 p-3">
+            <div id="liveToast" class="toast" role="alert">
+                <div class="toast-header">
+                    <strong class="me-auto">Whiteboard</strong>
+                    <small>just now</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+                </div>
+                <div class="toast-body" id="toastMessage">
+                    Hello, world! This is a toast message.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
