@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CipherForge - Advanced Text Encoder/Decoder</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="app-header">
+            <h1><i class="fas fa-lock"></i> CipherForge</h1>
+            <p><i class="fas fa-code"></i> Advanced Multi-Method Text Encoding & Decoding</p>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Method Selection -->
+            <section class="method-section">
+                <h2><i class="fas fa-tools"></i> Encoding Methods</h2>
+                <div class="method-categories">
+                    <div class="category-tabs">
+                        <button class="tab-btn active" data-category="classical">
+                            <i class="fas fa-landmark"></i> Classical
+                        </button>
+                        <button class="tab-btn" data-category="modern">
+                            <i class="fas fa-laptop-code"></i> Modern
+                        </button>
+                        <button class="tab-btn" data-category="custom">
+                            <i class="fas fa-palette"></i> Custom
+                        </button>
+                        <button class="tab-btn" data-category="chain">
+                            <i class="fas fa-link"></i> Method Chain
+                        </button>
+                    </div>
+                    
+                    <div class="methods-grid" id="methodsContainer">
+                        <!-- Methods will be loaded here dynamically -->
+                        <div class="loading-methods">
+                            <i class="fas fa-spinner fa-spin"></i> Loading methods...
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Text Areas -->
+            <section class="text-section">
+                <div class="text-area-container">
+                    <div class="input-area">
+                        <div class="area-header">
+                            <h3><i class="fas fa-keyboard"></i> Input Text</h3>
+                            <div class="text-info">
+                                <span id="charCount"><i class="fas fa-text-height"></i> 0 characters</span>
+                                <span id="wordCount"><i class="fas fa-font"></i> 0 words</span>
+                            </div>
+                        </div>
+                        <textarea 
+                            id="inputText" 
+                            placeholder="Enter text to encode or decode..."
+                            rows="8"
+                            autocomplete="off"
+                            spellcheck="false"
+                        ></textarea>
+                    </div>
+
+                    <div class="control-buttons">
+                        <button id="encodeBtn" class="btn btn-primary">
+                            <i class="fas fa-play"></i> Encode →
+                        </button>
+                        <button id="decodeBtn" class="btn btn-secondary">
+                            ← Decode <i class="fas fa-undo"></i>
+                        </button>
+                        <button id="clearBtn" class="btn btn-outline">
+                            <i class="fas fa-trash"></i> Clear All
+                        </button>
+                    </div>
+
+                    <div class="output-area">
+                        <div class="area-header">
+                            <h3><i class="fas fa-file-code"></i> Output Text</h3>
+                            <div class="output-actions">
+                                <button id="copyBtn" class="btn btn-small">
+                                    <i class="fas fa-copy"></i> Copy
+                                </button>
+                                <button id="downloadBtn" class="btn btn-small">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                        <textarea 
+                            id="outputText" 
+                            placeholder="Result will appear here..."
+                            rows="8"
+                            readonly
+                            autocomplete="off"
+                            spellcheck="false"
+                        ></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Method Configuration -->
+            <section class="config-section">
+                <div class="config-panel" id="configPanel">
+                    <div class="config-placeholder">
+                        <i class="fas fa-cog"></i>
+                        <p>Select a method to configure its settings</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Method Chain Builder -->
+            <section class="chain-section hidden" id="chainSection">
+                <h3><i class="fas fa-link"></i> Method Chain Builder</h3>
+                <div class="chain-builder">
+                    <div class="chain-steps" id="chainSteps">
+                        <div class="no-steps">
+                            <i class="fas fa-info-circle"></i>
+                            <p>No steps added yet. Click "Add Step" to begin building your encoding chain.</p>
+                        </div>
+                    </div>
+                    <div class="chain-actions">
+                        <button id="addStepBtn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Add Step
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Quick Actions -->
+            <section class="quick-actions">
+                <div class="quick-buttons">
+                    <button id="testAllBtn" class="btn btn-outline">
+                        <i class="fas fa-vial"></i> Test All Methods
+                    </button>
+                    <button id="debugBtn" class="btn btn-outline">
+                        <i class="fas fa-bug"></i> Debug Info
+                    </button>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p><i class="fas fa-heart"></i> Built for secure text transformation</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-content">
+            <i class="fas fa-lock fa-spin"></i>
+            <h3>Initializing CipherForge...</h3>
+            <p>Loading encryption methods</p>
+        </div>
+    </div>
+
+    <!-- Scripts with proper error handling -->
+    <script>
+        // Error handling for failed script loads
+        function handleScriptError(error) {
+            console.error('Script loading error:', error);
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            if (loadingOverlay) {
+                loadingOverlay.innerHTML = `
+                    <div class="loading-content error">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h3>Loading Error</h3>
+                        <p>Failed to load required scripts. Please refresh the page.</p>
+                        <button onclick="window.location.reload()" class="btn btn-primary">
+                            <i class="fas fa-redo"></i> Refresh Page
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Add error event listeners to all scripts
+        document.addEventListener('DOMContentLoaded', function() {
+            const scripts = document.querySelectorAll('script[src]');
+            scripts.forEach(script => {
+                script.addEventListener('error', handleScriptError);
+            });
+        });
+    </script>
+
+    <!-- Load scripts with fallback -->
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/ciphers/classical.js"></script>
+    <script src="scripts/ciphers/modern.js"></script>
+    <script src="scripts/ciphers/custom.js"></script>
+    <script src="scripts/ui.js"></script>
+    <script src="scripts/app.js"></script>
+
+    <!-- Fallback for missing scripts -->
+    <script>
+        // Check if essential classes are loaded
+        setTimeout(function() {
+            const requiredClasses = ['ClassicalCiphers', 'ModernEncoders', 'UIManager', 'TextUtils'];
+            const missing = requiredClasses.filter(cls => !window[cls]);
+            
+            if (missing.length > 0) {
+                console.error('Missing required classes:', missing);
+                handleScriptError(new Error(`Missing classes: ${missing.join(', ')}`));
+            } else {
+                // Hide loading overlay when everything is ready
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                if (loadingOverlay) {
+                    loadingOverlay.style.display = 'none';
+                }
+            }
+        }, 2000);
+    </script>
+
+    <!-- Debug and testing functions -->
+    <script>
+        // Global debug function
+        window.debugCipherForge = function() {
+            console.log('=== CIPHERFORGE DEBUG INFO ===');
+            
+            // Check classes
+            console.log('Available Classes:');
+            console.log('• ClassicalCiphers:', typeof ClassicalCiphers);
+            console.log('• ModernEncoders:', typeof ModernEncoders);
+            console.log('• CustomCiphers:', typeof CustomCiphers);
+            console.log('• UIManager:', typeof UIManager);
+            console.log('• TextUtils:', typeof TextUtils);
+            
+            // Test basic functionality
+            console.log('\n=== BASIC FUNCTIONALITY TESTS ===');
+            try {
+                const testText = "Hello World";
+                console.log('Test Text:', testText);
+                console.log('Caesar (shift 3):', ClassicalCiphers ? ClassicalCiphers.caesarCipher(testText, 3, true) : 'N/A');
+                console.log('Base64:', ModernEncoders ? ModernEncoders.base64Encode(testText) : 'N/A');
+                console.log('ROT13:', ModernEncoders ? ModernEncoders.rot13(testText) : 'N/A');
+            } catch (error) {
+                console.error('Test failed:', error);
+            }
+            
+            // Check DOM elements
+            console.log('\n=== DOM ELEMENTS ===');
+            const elements = ['inputText', 'outputText', 'encodeBtn', 'decodeBtn', 'methodsContainer', 'configPanel'];
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                console.log(`• ${id}:`, el ? 'Found' : 'MISSING');
+            });
+            
+            // Check if UIManager is initialized
+            if (window.cipherForgeApp && window.cipherForgeApp.uiManager) {
+                console.log('✓ UIManager initialized');
+            } else {
+                console.log('✗ UIManager not initialized');
+            }
+        };
+
+        // Test all methods
+        window.testAllMethods = function() {
+            const testText = "Hello World 123!";
+            const results = [];
+            
+            // Classical tests
+            if (ClassicalCiphers) {
+                results.push('=== CLASSICAL METHODS ===');
+                results.push(`Caesar (shift 4): ${ClassicalCiphers.caesarCipher(testText, 4, true)}`);
+                results.push(`Atbash: ${ClassicalCiphers.atbashCipher(testText)}`);
+                results.push(`Reverse: ${ClassicalCiphers.reverseCipher(testText)}`);
+                results.push(`Vigenère (key="test"): ${ClassicalCiphers.vigenereCipher(testText, "test", true)}`);
+            }
+            
+            // Modern tests
+            if (ModernEncoders) {
+                results.push('\n=== MODERN METHODS ===');
+                results.push(`Base64: ${ModernEncoders.base64Encode(testText)}`);
+                results.push(`URL: ${ModernEncoders.urlEncode(testText)}`);
+                results.push(`ROT13: ${ModernEncoders.rot13(testText)}`);
+            }
+            
+            alert(results.join('\n'));
+        };
+
+        // Add event listeners for debug buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const testBtn = document.getElementById('testAllBtn');
+            const debugBtn = document.getElementById('debugBtn');
+            
+            if (testBtn) {
+                testBtn.addEventListener('click', testAllMethods);
+            }
+            if (debugBtn) {
+                debugBtn.addEventListener('click', debugCipherForge);
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+Enter to encode
+            if (e.ctrlKey && e.key === 'Enter') {
+                e.preventDefault();
+                const encodeBtn = document.getElementById('encodeBtn');
+                if (encodeBtn) encodeBtn.click();
+            }
+            // Ctrl+Shift+Enter to decode
+            if (e.ctrlKey && e.shiftKey && e.key === 'Enter') {
+                e.preventDefault();
+                const decodeBtn = document.getElementById('decodeBtn');
+                if (decodeBtn) decodeBtn.click();
+            }
+            // F12 for debug
+            if (e.key === 'F12') {
+                e.preventDefault();
+                debugCipherForge();
+            }
+        });
+    </script>
+
+    <!-- Inline CSS for loading overlay -->
+    <style>
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: var(--text-primary);
+        }
+
+        .loading-content {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading-content i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .loading-content h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .loading-content.error i {
+            color: var(--error-color);
+        }
+
+        .loading-methods {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .config-placeholder {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .config-placeholder i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .no-steps {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+        }
+
+        .no-steps i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .quick-actions {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+    </style>
+</body>
+</html>
